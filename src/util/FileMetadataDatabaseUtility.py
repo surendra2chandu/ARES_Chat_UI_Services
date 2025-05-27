@@ -126,6 +126,28 @@ class FileMetadataDatabaseUtility:
             # Close the connection
             self.conn.close()
 
+    def get_all_file_names(self):
+        """
+        Retrieve all file names from the database.
+
+        :return: A list of all file names.
+        """
+        try:
+            logger.info("Retrieving all file names from the database.")
+            select_query = "SELECT file_name FROM file_properties;"
+            self.cursor.execute(select_query)
+            file_names = [row[0] for row in self.cursor.fetchall()]
+            return file_names
+
+        except Exception as e:
+            logger.error(f"Error retrieving file names: {e}")
+            raise HTTPException(status_code=500, detail=f"An error occurred during file name retrieval: {e}")
+        finally:
+            # Close the cursor
+            self.cursor.close()
+            # Close the connection
+            self.conn.close()
+
 
 if __name__ == "__main__":
     # Example usage

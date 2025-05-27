@@ -5,6 +5,7 @@ import hashlib
 from fastapi import HTTPException
 from src.conf.Configurations import logger,categories
 import shutil
+from src.util.FileMetadataDatabaseUtility import FileMetadataDatabaseUtility
 
 
 class FileUtilities:
@@ -179,7 +180,8 @@ class FileUtilities:
         :return: A list of versioned files
 
         """
-        files = os.listdir(folder_path)
+        # files = os.listdir(folder_path)
+        files = FileMetadataDatabaseUtility().get_all_file_names()
         if file_name in files:
             files.remove(file_name)
         names = []
@@ -257,12 +259,14 @@ if __name__ == "__main__":
     #
     # print("Versioned files:", version_files)
 
-    # get created and modified dates
-    file_dates = file_utilities.get_dates(sample_file_name, sample_folder_path)
+    # # get created and modified dates
+    # file_dates = file_utilities.get_dates(sample_file_name, sample_folder_path)
+    #
+    # print("Created and modified dates:", file_dates)
+    #
+    # f = file_utilities.get_dates("abc.66.pdf", sample_folder_path)
 
-    print("Created and modified dates:", file_dates)
-
-    f = file_utilities.get_dates("abc.66.pdf", sample_folder_path)
+    f = file_utilities.list_versioned_files("abc.66.pdf", sample_folder_path)
 
     print(f)
 
